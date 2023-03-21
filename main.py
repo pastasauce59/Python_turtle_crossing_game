@@ -20,12 +20,19 @@ while game_is_on:
     time.sleep(0.1)
     screen.update()
 
+    #Generates new car on every 6th time of game loop
     if loop % 6 == 0:
         new_car = CarManager()
         cars.append(new_car)
 
     for car in cars:
-        car.move()
+        #Detects car collision with player
+        if player.distance(car) < 35:
+            game_is_on = False
+        else:
+        #Otherwise makes every car in 'cars' list move forward across the screen
+            car.move()
     
+    #Increase loop count with every loop iteration
     loop += 1
 screen.exitonclick()
