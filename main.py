@@ -10,6 +10,7 @@ screen.tracer(0)
 
 player = Player()
 car_manager = CarManager()
+scoreboard = Scoreboard()
 
 screen.listen()
 screen.onkey(player.move_up, 'Up')
@@ -29,11 +30,13 @@ while game_is_on:
     for car in car_manager.cars:
         if car.distance(player) < 20:
             game_is_on = False
+            scoreboard.game_over()
 
     #Detect player crossing finish line
     if player.is_at_finish_line():
         player.set_player()
         car_manager.increase_speed()
+        scoreboard.level_up()
     
     #Increase loop count with every loop iteration
     loop += 1
