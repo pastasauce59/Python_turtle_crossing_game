@@ -9,7 +9,7 @@ screen.setup(width=600, height=600)
 screen.tracer(0)
 
 player = Player()
-cars = []
+car_manager = CarManager()
 
 screen.listen()
 screen.onkey(player.move_up, 'Up')
@@ -22,16 +22,18 @@ while game_is_on:
 
     #Generates new car on every 6th time of game loop
     if loop % 6 == 0:
-        new_car = CarManager()
-        cars.append(new_car)
-
-    for car in cars:
-        #Detects car collision with player
-        if player.distance(car) < 35:
+        car_manager.create_car()
+    car_manager.move_cars()
+    
+    #Detect player collision with cars
+    for car in car_manager.cars:
+        if car.distance(player) < 20:
             game_is_on = False
-        else:
-        #Otherwise makes every car in 'cars' list move forward across the screen
-            car.move()
+
+    #Detect player crossing finish line
+    if player.is_at_finish_line():
+        player.set_player()
+        car_manager.increase_speed()
     
     #Increase loop count with every loop iteration
     loop += 1
